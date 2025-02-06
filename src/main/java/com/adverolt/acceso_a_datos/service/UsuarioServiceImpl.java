@@ -65,8 +65,20 @@ public class UsuarioServiceImpl implements IUsuarioService{
     }
 
     @Override
-    public Boolean comprobarUsuario(String email, String contrasenya) throws Exception {
+    public Boolean comprobarUsuarioCorrecto(String email, String contrasenya) throws Exception {
         Usuario usuario = repository.findByEmailAndPassword(email, contrasenya);
         return usuario != null;
+    }
+
+    @Override
+    public Boolean comprobarUsuarioExiste(String email) throws Exception {
+        Usuario usuario = repository.findByEmail(email);
+        return usuario != null;
+    }
+
+    @Override
+    public UsuarioResponseDto devolverUsuarioConCorreo(String email) throws Exception {
+        UsuarioResponseDto usuario = modelMapper.map(repository.findByEmail(email), UsuarioResponseDto.class);
+        return usuario;
     }
 }

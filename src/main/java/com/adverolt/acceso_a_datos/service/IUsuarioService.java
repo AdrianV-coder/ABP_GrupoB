@@ -14,6 +14,9 @@ public interface IUsuarioService {
     Usuario registrar(UsuarioRequestDto usuarioDto);
     Usuario modificar(Integer id, UsuarioRequestDto usuarioDto);
     void eliminar(Integer id) throws Exception;
-    Boolean comprobarUsuario(String email, String contrasenya) throws Exception;
+
     //Métodos espefíficos de esta entidad
+    Boolean comprobarUsuarioCorrecto(String email, String contrasenya) throws Exception;
+    Boolean comprobarUsuarioExiste(String email) throws Exception;
+    UsuarioResponseDto devolverUsuarioConCorreo(String email) throws Exception;
 }

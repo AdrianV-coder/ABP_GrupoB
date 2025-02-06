@@ -15,4 +15,7 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, Integer> {
     //metodo que retorne bool si existe el correo del usuario em la base de datos
     @Query("FROM Usuario u WHERE u.correo LIKE :correo AND u.contrasena LIKE :contrasena")
     Usuario findByEmailAndPassword(@Param("correo") String correo, @Param("contrasena") String contrasena);
+
+    @Query("FROM Usuario u WHERE u.correo LIKE :correo")
+    Usuario findByEmail(@Param("correo") String correo);
 }

@@ -74,15 +74,28 @@ public class UsuarioController {
 
     }
 
-    @GetMapping("/comprobarUsuario")
-    public ResponseEntity<Boolean> comprobarUsuario(@Param("correo") String correo, @Param("contrasena") String contrasena) throws Exception {
-        if (service.comprobarUsuario(correo, contrasena)){
-            return new ResponseEntity<>(service.comprobarUsuario(correo, contrasena), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
     ////////////////////////////////////////
     /// Métods espefícos de esta entidad ///
     ////////////////////////////////////////
+
+    @GetMapping("/comprobarUsuarioCorrecto")
+    public ResponseEntity<Boolean> comprobarUsuarioCorrecto(@Param("correo") String correo, @Param("contrasena") String contrasena) throws Exception {
+        return new ResponseEntity<>(service.comprobarUsuarioCorrecto(correo, contrasena), HttpStatus.OK);
+    }
+
+    @GetMapping("/comprobarUsuarioExiste")
+    public ResponseEntity<Boolean> comprobarUsuarioExiste(@Param("correo") String correo) throws Exception {
+        return new ResponseEntity<>(service.comprobarUsuarioExiste(correo), HttpStatus.OK);
+    }
+
+    @GetMapping("/correo")
+    public ResponseEntity<UsuarioResponseDto> devolverUsuarioConCorreo(@Param("correo") String correo) throws Exception {
+        UsuarioResponseDto usuario = service.devolverUsuarioConCorreo(correo);
+
+        if (usuario == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(usuario, HttpStatus.OK);
+    }
 }
