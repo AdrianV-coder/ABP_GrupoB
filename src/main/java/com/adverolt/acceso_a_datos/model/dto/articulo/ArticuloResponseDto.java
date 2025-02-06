@@ -5,6 +5,7 @@ public class ArticuloResponseDto {
     private String titulo;
     private String descripcion;
 
+
     // CONSTRUCTORES
     public ArticuloResponseDto() {
     }

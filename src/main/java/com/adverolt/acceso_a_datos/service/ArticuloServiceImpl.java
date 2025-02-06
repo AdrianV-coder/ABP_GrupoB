@@ -1,24 +1,28 @@
 package com.adverolt.acceso_a_datos.service;
 
 import com.adverolt.acceso_a_datos.model.Articulo;
+import com.adverolt.acceso_a_datos.model.Usuario;
 import com.adverolt.acceso_a_datos.model.dto.articulo.ArticuloRequestDto;
 import com.adverolt.acceso_a_datos.model.dto.articulo.ArticuloResponseDto;
 import com.adverolt.acceso_a_datos.repository.IArticuloRepository;
-
+import com.adverolt.acceso_a_datos.repository.IUsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class ArticuloServiceImpl implements IArticuloService{
+public class ArticuloServiceImpl implements IArticuloService {
+
     @Autowired
     private IArticuloRepository repository;
 
     @Autowired
-    private IUsuarioService articuloService;
+    private IUsuarioRepository repoUsu;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -26,44 +30,49 @@ public class ArticuloServiceImpl implements IArticuloService{
     @Override
     public List<ArticuloResponseDto> listar() {
         return repository.findAll().stream()
-                .map(habitacion -> modelMapper.map(habitacion, ArticuloResponseDto.class))
+                .map(articulo -> modelMapper.map(articulo, ArticuloResponseDto.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public ArticuloResponseDto listarPorId(Integer id) {
-        Optional<Articulo> articulo = repository.findById(id);
-
-        return articulo.map(value -> modelMapper.map(value, ArticuloResponseDto.class))
+        return repository.findById(id)
+                .map(articulo -> modelMapper.map(articulo, ArticuloResponseDto.class))
                 .orElse(null);
     }
 
     @Override
-    public ArticuloRequestDto registrar(ArticuloResponseDto articulodto) throws Exception{
-        if (articuloService.listarPorId(articulodto.getId()) == null) {
-            throw new Exception("El hotel con el ID " + articulodto.getId() + " no existe.");
-        }
+    @Transactional
+    public Articulo registrar(ArticuloRequestDto articulodto) throws Exception {
+        Usuario usuario = repoUsu.findById(articulodto.getIdUsuario())
+                .orElseThrow(() -> new Exception("El usuario con ID " + articulodto.getIdUsuario() + " no existe."));
 
         Articulo articulo = modelMapper.map(articulodto, Articulo.class);
-        articulo.setUsuario(modelMapper.map(articuloService.listarPorId(articulodto.getId()), Articulo.class).getUsuario());
+        articulo.setUsuario(usuario);
 
-        return modelMapper.map(repository.save(articulo), ArticuloRequestDto.class);
+        return repository.save(articulo);
     }
 
     @Override
-    public Articulo modificar(ArticuloResponseDto articuloMod) {
-        Optional<Articulo> optionalArticulo = repository.findById(articuloMod.getId());
-        if (optionalArticulo.isPresent()) {
-            Articulo articulo = optionalArticulo.get();
-            return modelMapper.map(repository.save(articulo), Articulo.class);
-        }
-        return null;
+    @Transactional
+    public Articulo modificar(Integer id, ArticuloRequestDto articuloDto) throws Exception {
+        Articulo articuloExistente = repository.findById(id)
+                .orElseThrow(() -> new Exception("El artículo con ID " + id + " no existe."));
+
+        // Mantener el ID y el usuario original
+        articuloExistente.setTitulo(articuloDto.getTitulo());
+        articuloExistente.setDescripcion(articuloDto.getDescripcion());
+        articuloExistente.setFechaCreacion(articuloDto.getFechaCreacion());
+
+        return repository.save(articuloExistente);
     }
 
 
-
     @Override
+    @Transactional
     public void eliminar(Integer id) {
-        repository.deleteById(id);
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        }
     }
 }

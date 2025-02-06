@@ -5,6 +5,7 @@ import com.adverolt.acceso_a_datos.model.dto.usuario.UsuarioRequestDto;
 import com.adverolt.acceso_a_datos.model.dto.usuario.UsuarioResponseDto;
 import com.adverolt.acceso_a_datos.repository.IUsuarioRepository;
 
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,30 +36,31 @@ public class UsuarioServiceImpl implements IUsuarioService{
                 .orElse(null);
     }
 
+    @Transactional
     @Override
-    public UsuarioRequestDto registrar(UsuarioResponseDto usuariodto) {
-        Usuario hotel = modelMapper.map(usuariodto, Usuario.class);
-        hotel = repository.save(hotel);
-
-        return modelMapper.map(hotel, UsuarioRequestDto.class);
+    public Usuario registrar(UsuarioRequestDto usuariodto) {
+        Usuario usuario = modelMapper.map(usuariodto, Usuario.class);
+        return repository.save(usuario);
     }
 
     @Override
-    public UsuarioResponseDto modificar(Integer id, UsuarioRequestDto usuariodto) {
-        Optional<Usuario> optionalHotel = repository.findById(id);
-
-        if (optionalHotel.isPresent()) {
-            Usuario usuario = optionalHotel.get();
-            modelMapper.map(usuariodto, usuario);
-
-            return modelMapper.map(repository.save(usuario), UsuarioResponseDto.class);
+    public Usuario modificar(Integer id, UsuarioRequestDto usuariodto) {
+        Optional<Usuario> op = repository.findById(id);
+        if (op.isPresent()) {
+            Usuario usuario = modelMapper.map(usuariodto, Usuario.class);
+            usuario.setId(op.get().getId());
+            repository.save(usuario);
+            return usuario;
         }
-
         return null;
     }
 
     @Override
-    public void eliminar(Integer id) {
-        repository.deleteById(id);
+    public void eliminar(Integer id) throws Exception {
+        if (repository.findById(id).isPresent()) {
+            repository.deleteById(id);
+        } else {
+            throw new Exception("No existe el usuario");
+        }
     }
 }

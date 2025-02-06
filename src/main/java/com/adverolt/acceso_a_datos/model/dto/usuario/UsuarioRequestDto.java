@@ -22,14 +22,11 @@ public class UsuarioRequestDto {
 
     private double longitud;
     private double latitud;
-    @NotNull
-    private Integer idUsuario;
 
     // CONSTRUCTORES
     public UsuarioRequestDto() {
     }
-    public UsuarioRequestDto(Integer idUsuario, String nombre, String apellidos, String correo, String contrasena, double longitud, double latitud) {
-        this.idUsuario = idUsuario;
+    public UsuarioRequestDto(String nombre, String apellidos, String correo, String contrasena, double longitud, double latitud) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.correo = correo;
@@ -39,13 +36,6 @@ public class UsuarioRequestDto {
     }
 
     // GETTERS Y SETTERS
-    public Integer getIdUsuario() {
-        return idUsuario;
-    }
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
     public String getNombre() {
         return nombre;
     }

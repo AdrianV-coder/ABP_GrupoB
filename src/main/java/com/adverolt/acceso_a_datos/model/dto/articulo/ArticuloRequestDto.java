@@ -1,6 +1,5 @@
 package com.adverolt.acceso_a_datos.model.dto.articulo;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -9,32 +8,21 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class ArticuloRequestDto {
-    @NotNull
+
     private Integer id;
 
-    @NotEmpty
+    @NotEmpty(message = "El título no puede estar vacío")
     private String titulo;
 
     @Size(min = 10, message = "La descripción debe tener al menos 10 caracteres.")
     private String descripcion;
 
-    @NotEmpty
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private LocalDate fechaCreacion;
-
     @NotNull
-    private Integer idUsuario;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private LocalDate fechaCreacion = LocalDate.now();
 
-    // CONSTRUCTORES
-    public ArticuloRequestDto() {
-    }
-    public ArticuloRequestDto(Integer id, String titulo, String descripcion, Integer idUsuario) {
-        this.id = id;
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.fechaCreacion = LocalDate.now();
-        this.idUsuario = idUsuario;
-    }
+    @NotNull(message = "El ID de usuario no puede ser nulo")
+    private Integer idUsuario;
 
     // GETTERS Y SETTERS
     public Integer getId() {

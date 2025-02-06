@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 @Entity
 public class Articulo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -27,10 +28,11 @@ public class Articulo {
     // CONSTRUCTORES
     public Articulo() {
     }
-    public Articulo(String titulo, String descripcion) {
+    public Articulo(String titulo, String descripcion, Usuario usuario) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.fechaCreacion = LocalDate.now();
+        this.usuario = usuario;
     }
 
     // GETTERS Y SETTERS

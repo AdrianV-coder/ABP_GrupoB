@@ -20,9 +20,6 @@ public class Usuario {
     @Column(nullable = false)
     private String contrasena;
 
-    /*@Embedded  // INDICA QUE ESTA CLASE SE GUARDA DENTRO DE LA ENTIDAD
-    private Ubicacion ubicacion;*/
-
     @Column(nullable = false)
     private double longitud;
 

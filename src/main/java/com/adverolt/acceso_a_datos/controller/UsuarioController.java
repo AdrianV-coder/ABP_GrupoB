@@ -47,23 +47,30 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioRequestDto> registrar(@RequestBody UsuarioResponseDto usuario) {
-        // Código 200 OK para select
-        return new ResponseEntity<>(service.registrar(usuario), HttpStatus.OK);
+    public ResponseEntity<Usuario> registrar(@RequestBody UsuarioRequestDto usuario) {
+
+        Usuario usuario1 = service.registrar(usuario);
+        if (usuario1 == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(usuario1, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDto> modificar(@PathVariable Integer id, @RequestBody UsuarioRequestDto usuario) {
+    public ResponseEntity<Usuario> modificar(@PathVariable Integer id, @RequestBody UsuarioRequestDto usuario) {
         // Código 200 OK para select
         return new ResponseEntity<>(service.modificar(id, usuario), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable("id") Integer id) {
-        service.eliminar(id);
+        try {
+            service.eliminar(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-        // Código 204 NOT CONTENT para delete
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     ////////////////////////////////////////
