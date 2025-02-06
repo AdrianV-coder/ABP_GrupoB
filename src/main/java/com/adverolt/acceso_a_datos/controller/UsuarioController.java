@@ -6,6 +6,7 @@ import com.adverolt.acceso_a_datos.model.dto.usuario.UsuarioResponseDto;
 import com.adverolt.acceso_a_datos.service.IUsuarioService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -73,6 +74,14 @@ public class UsuarioController {
 
     }
 
+    @GetMapping("/comprobarUsuario")
+    public ResponseEntity<Boolean> comprobarUsuario(@Param("correo") String correo, @Param("contrasena") String contrasena) throws Exception {
+        if (service.comprobarUsuario(correo, contrasena)){
+            return new ResponseEntity<>(service.comprobarUsuario(correo, contrasena), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
     ////////////////////////////////////////
     /// Métods espefícos de esta entidad ///
     ////////////////////////////////////////

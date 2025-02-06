@@ -63,4 +63,10 @@ public class UsuarioServiceImpl implements IUsuarioService{
             throw new Exception("No existe el usuario");
         }
     }
+
+    @Override
+    public Boolean comprobarUsuario(String email, String contrasenya) throws Exception {
+        Usuario usuario = repository.findByEmailAndPassword(email, contrasenya);
+        return usuario != null;
+    }
 }
