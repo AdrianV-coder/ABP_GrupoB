@@ -47,9 +47,9 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioResponseDto> registrar(@RequestBody UsuarioRequestDto usuario) {
+    public ResponseEntity<UsuarioRequestDto> registrar(@RequestBody UsuarioResponseDto usuario) {
         // Código 200 OK para select
-        return new ResponseEntity<>(modelMapper.map(service.registrar(usuario), UsuarioResponseDto.class), HttpStatus.OK);
+        return new ResponseEntity<>(service.registrar(usuario), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

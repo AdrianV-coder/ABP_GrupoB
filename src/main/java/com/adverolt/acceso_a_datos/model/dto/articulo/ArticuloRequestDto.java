@@ -9,6 +9,9 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class ArticuloRequestDto {
+    @NotNull
+    private Integer id;
+
     @NotEmpty
     private String titulo;
 
@@ -25,7 +28,8 @@ public class ArticuloRequestDto {
     // CONSTRUCTORES
     public ArticuloRequestDto() {
     }
-    public ArticuloRequestDto(String titulo, String descripcion, Integer idUsuario) {
+    public ArticuloRequestDto(Integer id, String titulo, String descripcion, Integer idUsuario) {
+        this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.fechaCreacion = LocalDate.now();
@@ -33,6 +37,12 @@ public class ArticuloRequestDto {
     }
 
     // GETTERS Y SETTERS
+    public Integer getId() {
+        return id;
+    }
+    public void setId(Integer id) {
+        this.id = id;
+    }
     public String getTitulo() {
         return titulo;
     }

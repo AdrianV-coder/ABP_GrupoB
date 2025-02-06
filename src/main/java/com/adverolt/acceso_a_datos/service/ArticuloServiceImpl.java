@@ -39,28 +39,28 @@ public class ArticuloServiceImpl implements IArticuloService{
     }
 
     @Override
-    public ArticuloRequestDto registrar(ArticuloRequestDto articulodto) throws Exception{
-        if (articuloService.listarPorId(articulodto.getIdUsuario()) == null) {
-            throw new Exception("El hotel con el ID " + articulodto.getIdUsuario() + " no existe.");
+    public ArticuloRequestDto registrar(ArticuloResponseDto articulodto) throws Exception{
+        if (articuloService.listarPorId(articulodto.getId()) == null) {
+            throw new Exception("El hotel con el ID " + articulodto.getId() + " no existe.");
         }
 
         Articulo articulo = modelMapper.map(articulodto, Articulo.class);
-        articulo.setUsuario(modelMapper.map(articuloService.listarPorId(articulodto.getIdUsuario()), Articulo.class).getUsuario());
+        articulo.setUsuario(modelMapper.map(articuloService.listarPorId(articulodto.getId()), Articulo.class).getUsuario());
 
         return modelMapper.map(repository.save(articulo), ArticuloRequestDto.class);
     }
 
     @Override
-    public ArticuloResponseDto modificar(Integer id, ArticuloRequestDto articulodto) {
-        Optional<Articulo> optionalHabitacion = repository.findById(id);
-        if (optionalHabitacion.isPresent()) {
-            Articulo articulo = optionalHabitacion.get();
-            modelMapper.map(articulodto, articulo);
-            articulo.setUsuario(modelMapper.map(articuloService.listarPorId(articulodto.getIdUsuario()), Articulo.class).getUsuario());
-            return modelMapper.map(repository.save(articulo), ArticuloResponseDto.class);
+    public Articulo modificar(ArticuloResponseDto articuloMod) {
+        Optional<Articulo> optionalArticulo = repository.findById(articuloMod.getId());
+        if (optionalArticulo.isPresent()) {
+            Articulo articulo = optionalArticulo.get();
+            return modelMapper.map(repository.save(articulo), Articulo.class);
         }
         return null;
     }
+
+
 
     @Override
     public void eliminar(Integer id) {

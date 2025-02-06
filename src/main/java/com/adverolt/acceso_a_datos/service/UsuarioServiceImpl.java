@@ -1,16 +1,13 @@
 package com.adverolt.acceso_a_datos.service;
 
-import com.adverolt.acceso_a_datos.model.Articulo;
 import com.adverolt.acceso_a_datos.model.Usuario;
-import com.adverolt.acceso_a_datos.model.dto.articulo.ArticuloRequestDto;
-import com.adverolt.acceso_a_datos.model.dto.articulo.ArticuloResponseDto;
 import com.adverolt.acceso_a_datos.model.dto.usuario.UsuarioRequestDto;
 import com.adverolt.acceso_a_datos.model.dto.usuario.UsuarioResponseDto;
 import com.adverolt.acceso_a_datos.repository.IUsuarioRepository;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,11 +36,11 @@ public class UsuarioServiceImpl implements IUsuarioService{
     }
 
     @Override
-    public UsuarioResponseDto registrar(UsuarioRequestDto usuariodto) {
+    public UsuarioRequestDto registrar(UsuarioResponseDto usuariodto) {
         Usuario hotel = modelMapper.map(usuariodto, Usuario.class);
         hotel = repository.save(hotel);
 
-        return modelMapper.map(hotel, UsuarioResponseDto.class);
+        return modelMapper.map(hotel, UsuarioRequestDto.class);
     }
 
     @Override

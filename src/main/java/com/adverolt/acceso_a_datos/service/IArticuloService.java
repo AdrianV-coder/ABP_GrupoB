@@ -9,8 +9,8 @@ import java.util.List;
 public interface IArticuloService {
     List<ArticuloResponseDto> listar();
     ArticuloResponseDto listarPorId(Integer id);
-    ArticuloRequestDto registrar(ArticuloRequestDto habitacion) throws Exception;
-    ArticuloResponseDto modificar(Integer id, ArticuloRequestDto habitacion);
+    ArticuloRequestDto registrar(ArticuloResponseDto articulo) throws Exception;
+    Articulo modificar(ArticuloResponseDto articulo);
     void eliminar(Integer id);
 
     //Métodos espefíficos de esta entidad

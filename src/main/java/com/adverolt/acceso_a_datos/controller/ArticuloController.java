@@ -1,5 +1,6 @@
 package com.adverolt.acceso_a_datos.controller;
 
+import com.adverolt.acceso_a_datos.model.Articulo;
 import com.adverolt.acceso_a_datos.model.dto.articulo.ArticuloRequestDto;
 import com.adverolt.acceso_a_datos.model.dto.articulo.ArticuloResponseDto;
 import com.adverolt.acceso_a_datos.model.dto.usuario.UsuarioResponseDto;
@@ -24,12 +25,12 @@ public class ArticuloController {
 
     @GetMapping
     public ResponseEntity<List<ArticuloResponseDto>> listar() {
-        List<ArticuloResponseDto> habitaciones = service.listar()
+        List<ArticuloResponseDto> articulos = service.listar()
                 .stream()
                 .map(habitacion -> modelMapper.map(habitacion, ArticuloResponseDto.class))
                 .collect(Collectors.toList());
 
-        return new ResponseEntity<>(habitaciones, HttpStatus.OK);
+        return new ResponseEntity<>(articulos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -46,13 +47,13 @@ public class ArticuloController {
     }
 
     @PostMapping
-    public ResponseEntity<ArticuloResponseDto> registrar(@RequestBody ArticuloRequestDto dto) throws Exception {
-        return new ResponseEntity<>(modelMapper.map(service.registrar(dto), ArticuloResponseDto.class), HttpStatus.OK);
+    public ResponseEntity<ArticuloRequestDto> registrar(@RequestBody ArticuloResponseDto dto) throws Exception {
+        return new ResponseEntity<>(service.registrar(dto), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ArticuloResponseDto> modificar(@PathVariable Integer id, @RequestBody ArticuloRequestDto habitacion) {
-        return new ResponseEntity<>(service.modificar(id, habitacion), HttpStatus.OK);
+    public ResponseEntity<Articulo> modificar(@PathVariable("id") Integer id, @RequestBody ArticuloResponseDto articulo) {
+        return new ResponseEntity<>(service.modificar(articulo), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

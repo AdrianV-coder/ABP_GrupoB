@@ -11,7 +11,7 @@ import java.util.List;
 public interface IUsuarioService {
     List<UsuarioResponseDto> listar();
     UsuarioResponseDto listarPorId(Integer id);
-    UsuarioResponseDto registrar(UsuarioRequestDto articulodto);
+    UsuarioRequestDto registrar(UsuarioResponseDto articulodto);
     UsuarioResponseDto modificar(Integer id, UsuarioRequestDto hotel);
     void eliminar(Integer id);
 
